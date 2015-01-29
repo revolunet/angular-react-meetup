@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Angular+React</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style type="text/css">
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body {
+        font-family: 'Yanone Kaffeesatz';
+      }
+      .remark-slide-content {
+        background: #efefef;
+        color: #222;
+      }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+
+      .remark-slide-content h1 {
+        font-size:80px;
+      }
+
+      .devfloor {
+        font-size:80px;
+      }
+      .remark-slide-content.word {
+        font-size:100px;
+        padding:160px 0;
+        text-align: center;
+        
+      }
+      .remark-slide-content.word .h4 {
+          font-size:40px;
+      }
+      .remark-slide-content.word .h3 {
+          font-size:60px;
+      }
+      .remark-slide-content.twowords {
+        font-size:100px;
+        padding:100px 0;
+        text-align: center;
+      }
+
+      .remark-slide-number {
+        display: none;
+      }
+      .advantages {
+        font-size:35px;
+      }
+      code {
+        background: white !important;
+      }
+      a {
+        color: #222;
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: word
+
+AngularJS + ReactJS
+
+.h4[@ngParis le 29/01/2015]
+
+???
+
+Pourquoi et comment intégrer React dans des applications Angular
+
+---
+class: word
+
+Experience
+
+???
+
+Julien Bouquillon @revolunet github/twitter
+
+- +2 years of Angular
+
+- Desktop and mobile web applications
+
+- Phonegap/Cordova
+
+working from @NUMA Dev'Floor, best place for freelances and startups
+
+- 25 places sur 150m2
+
+- quartier central et animé
+
+- ouvert 24/7, fibre optique, services...
+
+Experimenting with react on new mobile project
+
+-> retour d'expérience
+
+---
+class: word
+
+AngularJS
+
+???
+
+- Productivité (prototyping)
+
+- Réusabilité (modules)
+
+- Directives
+
+- Testing
+
+- Communauté
+
+---
+class:word
+
+Data binding
+
+???
+
+Le data-binding est la feature la plus appréciée et la plus puissante d'Angular, mais le fonctionnement actuel pose des challenges de performance :
+
+- Cycle de digest global à l'application : n'importe quel évènement dans votre app va re-évaluer tous vos bindings : clicks, requetes http, promises, changement de modèle... en cas de mise à jour d'un modèle c'est n digests qui sont executés jusqu'a stabilisation (donc minimum 2 cycles)
+
+- 60fps === Temps de digest doit être < 16ms pour assurer la fluidité
+
+- Peu de maitrise possible des cycles de digest
+
+---
+class: word
+
+ReactJS
+
+???
+
+- Uniquement les directives (non-standard web components)
+    - virtual DOM : fix slow DOM updates
+    - event delegation : reduce listeners
+    - internal state management
+
+- Simple, straightforward, explicite : en gros, une fonction render qui renvoie le HTML final
+
+- apporte une vraie isolation des composants
+
+- bonne intégration avec npm, browserify...
+
+---
+class: center, middle
+
+![fight](./img/fight.png)
+
+???
+
+Micro benchmark sur un cas simple
+
+Montre uniquement les perfs brutes sur un cas précis et isolé
+
+???
+
+- 'track by' indispensable
+
+- temps de rendu initial sensiblement équivalent
+
+- temps de MAJ optimisé sur react
+
+- 1015 listeners VS 15
+
+- interactions précises et explicites avec react
+
+---
+class: word
+
+Intégration
+
+???
+
+comment intégrer des composants react dans angular
+
+---
+
+<h3>Instantiate component and render inside a DOM element :</h3>
+
+<br>
+
+```js
+// attributs passés au composant
+var props = {
+  data: tableData
+};
+
+var instance = React.createFactory(TableExampleClass)(props);
+
+// final render
+React.render(
+  instance,
+  document.getElementById('reactTable')
+);
+
+```
+
+---
+
+<h3>Using an angular directive</h3>
+
+```js
+angular.module('demo')
+
+.directive('reactExample', function() {
+  return {
+    restrict: 'E',
+    link: function(scope, iElement, iAttributes) {
+
+      var props = scope.$eval(iAttributes.props);
+      var instance = React.createFactory(iAttributes.component)(props);
+
+      React.render(
+        instance,
+        iElement[0]
+      );
+
+    }
+  };
+});
+```
+
+```html
+<react-example component="TableExample" props="{data: myData}"></react-example>
+```
+
+???
+
+also see ngReact project
+---
+class:center
+
+<h1>Conclusion</h1>
+
+<h3>Explicit is better than implicit</h3>
+<h3>Achieve true isolation with react componentss</h3>
+<h3>Embrace NPM and browserify standards</h3>
+
+---
+class:center
+
+<h1>Questions ?</h1>
+
+[https://revolunet.github.com/angular-react-meetup](https://revolunet.github.com/angular-react-meetup)
+
+[http://www.williambrownstreet.net/blog/2014/04/faster-angularjs-rendering-angularjs-and-reactjs](http://www.williambrownstreet.net/blog/2014/04/faster-angularjs-rendering-angularjs-and-reactjs)
+
+[https://github.com/revolunet/reactify](https://github.com/revolunet/reactify)
+
+[https://github.com/davidchang/ngReact](https://github.com/davidchang/ngReact)
+
+
+<h1>Thanks !</h1>
+
+[@revolunet](http://twitter.com/revolunet)
+
+---
+
+
+    </textarea>
+    <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>
