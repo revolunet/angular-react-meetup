@@ -6,6 +6,38 @@ var _ = require('lodash');
 
 var config = require('../../config.js');
 
+
+
+function getAge(value) {
+  //  self.counters.filter++;
+    var ddn = new Date(value);
+    return (new Date()).getFullYear() - ddn.getFullYear();
+}
+
+function formatFirst(first) {
+    //this.counters.func++;
+    // console.log(this.counters);
+    return first.toUpperCase();
+}
+
+var Row  = React.createClass({
+    propTypes: {
+        data: React.PropTypes.shape,
+        onClick: React.PropTypes.func,
+        rowCls: React.PropTypes.string
+    },
+    render: function() {
+        return <tr className={this.props.data.checked?'checked':''}>
+                    <td><input type="checkbox" defaultChecked={this.props.data.checked} onClick={this.props.onClick}/></td>
+                    <td>{ formatFirst(this.props.data.first) }</td>
+                    <td>{ this.props.data.last }</td>
+                    <td>{ this.props.data.email }</td>
+                    <td>{ getAge(this.props.data.ddn) }</td>
+                    <td className={this.props.rowCls}></td>
+                </tr>
+    }
+});
+
 var ExampleTable = React.createClass({
     propTypes: {
         data: React.PropTypes.array.isRequired
@@ -51,19 +83,8 @@ var ExampleTable = React.createClass({
             return this.state.data;
         }
     },
-    formatFirst: function(first) {
-        this.counters.func++;
-       // console.log(this.counters);
-        return first.toUpperCase();
-    },
     render: function() {
         var self = this;
-
-        function getAge(value) {
-            self.counters.filter++;
-            var ddn = new Date(value);
-            return (new Date()).getFullYear() - ddn.getFullYear();
-        }
 
         this.counters.render++;
        // console.log(this.counters);
@@ -82,16 +103,8 @@ var ExampleTable = React.createClass({
                 <input value={query} onChange={this.onUpdateQuery} placeholder="filter..."/>
                 <tbody>
                     {this.getRows().map(function(row, i) {
-                        return <tr key={row.id} className={row.checked?'checked':''}>
-                            <td><input type="checkbox" defaultChecked={row.checked} onClick={this.onRowClick.bind(this, row)}/></td>
-                            <td>{ this.formatFirst(row.first) }</td>
-                            <td>{ row.last }</td>
-                            <td>{ row.email }</td>
-                            <td>{ getAge(row.ddn) }</td>
-                            <td className={i%2==0?'odd':''}></td>
-                        </tr>
+                        return <Row key={row.id} data={row} rowCls={i%2==0?'odd':''} onClick={this.onRowClick.bind(this, row)}/>
                     }, this)}
-                    
                 </tbody>
             </table>;
     }

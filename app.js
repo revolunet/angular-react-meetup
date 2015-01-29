@@ -190,6 +190,38 @@ var _ = require('lodash');
 
 var config = require('../../config.js');
 
+
+
+function getAge(value) {
+  //  self.counters.filter++;
+    var ddn = new Date(value);
+    return (new Date()).getFullYear() - ddn.getFullYear();
+}
+
+function formatFirst(first) {
+    //this.counters.func++;
+    // console.log(this.counters);
+    return first.toUpperCase();
+}
+
+var Row  = React.createClass({displayName: "Row",
+    propTypes: {
+        data: React.PropTypes.shape,
+        onClick: React.PropTypes.func,
+        rowCls: React.PropTypes.string
+    },
+    render: function() {
+        return React.createElement("tr", {className: this.props.data.checked?'checked':''}, 
+                    React.createElement("td", null, React.createElement("input", {type: "checkbox", defaultChecked: this.props.data.checked, onClick: this.props.onClick})), 
+                    React.createElement("td", null,  formatFirst(this.props.data.first) ), 
+                    React.createElement("td", null,  this.props.data.last), 
+                    React.createElement("td", null,  this.props.data.email), 
+                    React.createElement("td", null,  getAge(this.props.data.ddn) ), 
+                    React.createElement("td", {className: this.props.rowCls})
+                )
+    }
+});
+
 var ExampleTable = React.createClass({displayName: "ExampleTable",
     propTypes: {
         data: React.PropTypes.array.isRequired
@@ -235,19 +267,8 @@ var ExampleTable = React.createClass({displayName: "ExampleTable",
             return this.state.data;
         }
     },
-    formatFirst: function(first) {
-        this.counters.func++;
-       // console.log(this.counters);
-        return first.toUpperCase();
-    },
     render: function() {
         var self = this;
-
-        function getAge(value) {
-            self.counters.filter++;
-            var ddn = new Date(value);
-            return (new Date()).getFullYear() - ddn.getFullYear();
-        }
 
         this.counters.render++;
        // console.log(this.counters);
@@ -266,16 +287,8 @@ var ExampleTable = React.createClass({displayName: "ExampleTable",
                 React.createElement("input", {value: query, onChange: this.onUpdateQuery, placeholder: "filter..."}), 
                 React.createElement("tbody", null, 
                     this.getRows().map(function(row, i) {
-                        return React.createElement("tr", {key: row.id, className: row.checked?'checked':''}, 
-                            React.createElement("td", null, React.createElement("input", {type: "checkbox", defaultChecked: row.checked, onClick: this.onRowClick.bind(this, row)})), 
-                            React.createElement("td", null,  this.formatFirst(row.first) ), 
-                            React.createElement("td", null,  row.last), 
-                            React.createElement("td", null,  row.email), 
-                            React.createElement("td", null,  getAge(row.ddn) ), 
-                            React.createElement("td", {className: i%2==0?'odd':''})
-                        )
+                        return React.createElement(Row, {key: row.id, data: row, rowCls: i%2==0?'odd':'', onClick: this.onRowClick.bind(this, row)})
                     }, this)
-                    
                 )
             );
     }
