@@ -11,10 +11,9 @@ module.exports = {
 var angular = require('angular');
 
 var data = require('../data');
-var config = require('../../config.js');
 
 var avatar = require('../avatar.js');
-
+var customFilter = require('../customFilter.js');
 
 angular.module('Demo', [])
 
@@ -36,6 +35,12 @@ angular.module('Demo', [])
         console.log('nothing!');
     };
 
+})
+
+.filter('customFilter', function() {
+    var func = customFilter;
+    func.$stateful = true;
+    return func;
 })
 
 .value('counters', {
@@ -66,7 +71,7 @@ angular.module('Demo', [])
 .filter('avatar', function() {
     var func = avatar;
     func.$stateful = true;
-    return avatar;
+    return func;
 })
 
 .directive('scopeIsolate', function() {
@@ -111,14 +116,12 @@ angular.module('Demo', [])
 .directive('tableExample', function(counters) {
     return {
         restrict: 'E',
-        template: Buffer("PGlucHV0IG5nLW1vZGVsPSJxdWVyeSIgcGxhY2Vob2xkZXI9ImZpbHRlci4uLiIvPgoKPHRhYmxlIGNsYXNzPSJ0YWJsZSB0YWJsZS1ib3JkZXJlZCB0YWJsZS1zdHJpcGVkIj4KICAgIDx0aGVhZD4KICAgICAgICA8dHI+CiAgICAgICAgICAgIDx0aD48L3RoPgogICAgICAgICAgICA8dGg+Zmlyc3Q8L3RoPgogICAgICAgICAgICA8dGg+bGFzdDwvdGg+CiAgICAgICAgICAgIDx0aD5lbWFpbDwvdGg+CiAgICAgICAgICAgIDx0aD5waWM8L3RoPgogICAgICAgICAgICA8dGg+YWdlPC90aD4KICAgICAgICAgICAgPHRoPnN0YXR1czwvdGg+CiAgICAgICAgPC90cj4KICAgIDwvdGhlYWQ+CiAgICA8dGJvZHk+CiAgICAgICAgPHRyCiAgICAgICAgICAgIG5nLXJlcGVhdD0icm93IGluIGRhdGF8ZmlsdGVyOnF1ZXJ5IHRyYWNrIGJ5IHJvdy5pZCIKICAgICAgICAgICAgbmctY2xhc3M9IntjaGVja2VkOiByb3cuY2hlY2tlZH0iPgoKICAgICAgICAgICAgPHRkPjxpbnB1dCB0eXBlPSJjaGVja2JveCIgbmctY2hlY2tlZD0icm93LmNoZWNrZWQiIG5nLWNsaWNrPSJDdHJsLmNsaWNrUm93KHJvdykiLz48L3RkPgogICAgICAgICAgICA8dGQ+e3sgQ3RybC5mb3JtYXRGaXJzdChyb3cuZmlyc3QpIH19PC90ZD4KICAgICAgICAgICAgPHRkPnt7IHJvdy5sYXN0IH19PC90ZD4KICAgICAgICAgICAgPHRkPnt7IHJvdy5lbWFpbCB9fTwvdGQ+CiAgICAgICAgICAgIDx0ZD48aW1nIG5nLXNyYz0ie3sgcm93LmlkfGF2YXRhciB9fSIgd2lkdGg9IjUwIi8+PC90ZD4KICAgICAgICAgICAgPHRkPnt7IHJvdy5kZG58c2luY2UgfX08L3RkPgogICAgICAgICAgICA8dGQgbmctY2xhc3M9IntvZGQ6ICRpbmRleCUyPT0wfSI+PC90ZD4KICAgICAgICA8L3RyPgogICAgPC90Ym9keT4KCjwvdGFibGU+Cg==","base64").toString(),
+        template: Buffer("PGlucHV0IG5nLW1vZGVsPSJxdWVyeSIgcGxhY2Vob2xkZXI9ImZpbHRlci4uLiIvPgoKPHRhYmxlIGNsYXNzPSJ0YWJsZSB0YWJsZS1ib3JkZXJlZCB0YWJsZS1zdHJpcGVkIj4KICAgIDx0aGVhZD4KICAgICAgICA8dHI+CiAgICAgICAgICAgIDx0aD48L3RoPgogICAgICAgICAgICA8dGg+Zmlyc3Q8L3RoPgogICAgICAgICAgICA8dGg+bGFzdDwvdGg+CiAgICAgICAgICAgIDx0aD5lbWFpbDwvdGg+CiAgICAgICAgICAgIDx0aD5waWM8L3RoPgogICAgICAgICAgICA8dGg+YWdlPC90aD4KICAgICAgICAgICAgPHRoPnN0YXR1czwvdGg+CiAgICAgICAgPC90cj4KICAgIDwvdGhlYWQ+CiAgICA8dGJvZHk+CiAgICAgICAgPHRyCiAgICAgICAgICAgIG5nLXJlcGVhdD0icm93IGluIGRhdGF8Y3VzdG9tRmlsdGVyOnF1ZXJ5IHRyYWNrIGJ5IHJvdy5pZCIKICAgICAgICAgICAgbmctY2xhc3M9IntjaGVja2VkOiByb3cuY2hlY2tlZH0iPgogICAgICAgICAgICA8dGQ+PGlucHV0IHR5cGU9ImNoZWNrYm94IiBuZy1jaGVja2VkPSJyb3cuY2hlY2tlZCIgbmctY2xpY2s9IkN0cmwuY2xpY2tSb3cocm93KSIvPjwvdGQ+CiAgICAgICAgICAgIDx0ZD57eyBDdHJsLmZvcm1hdEZpcnN0KHJvdy5maXJzdCkgfX08L3RkPgogICAgICAgICAgICA8dGQ+e3sgcm93Lmxhc3QgfX08L3RkPgogICAgICAgICAgICA8dGQ+e3sgcm93LmVtYWlsIH19PC90ZD4KICAgICAgICAgICAgPHRkPjxpbWcgbmctc3JjPSJ7eyByb3cuaWR8YXZhdGFyIH19IiB3aWR0aD0iNTAiLz48L3RkPgogICAgICAgICAgICA8dGQ+e3sgcm93LmRkbnxzaW5jZSB9fTwvdGQ+CiAgICAgICAgICAgIDx0ZCBuZy1jbGFzcz0ie29kZDogJGluZGV4JTI9PTB9Ij48L3RkPgogICAgICAgIDwvdHI+CiAgICA8L3Rib2R5PgoKPC90YWJsZT4K","base64").toString(),
         scope: {
             data:'='
         },
         controllerAs: 'Ctrl',
         controller: function($scope, $timeout) {
-
-            $scope.maxRows = config.maxRows;
 
             this.formatFirst = function(value) {
                 counters.func++;
@@ -136,7 +139,7 @@ window.loadng = function() {
 };
 
 }).call(this,require("buffer").Buffer)
-},{"../../config.js":"/Users/juju/Documents/projects/angular-react-meetup/config.js","../avatar.js":"/Users/juju/Documents/projects/angular-react-meetup/js/avatar.js","../data":"/Users/juju/Documents/projects/angular-react-meetup/js/data.js","angular":"/Users/juju/Documents/projects/angular-react-meetup/node_modules/angular/index.js","buffer":"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/buffer/index.js"}],"/Users/juju/Documents/projects/angular-react-meetup/js/app.js":[function(require,module,exports){
+},{"../avatar.js":"/Users/juju/Documents/projects/angular-react-meetup/js/avatar.js","../customFilter.js":"/Users/juju/Documents/projects/angular-react-meetup/js/customFilter.js","../data":"/Users/juju/Documents/projects/angular-react-meetup/js/data.js","angular":"/Users/juju/Documents/projects/angular-react-meetup/node_modules/angular/index.js","buffer":"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/buffer/index.js"}],"/Users/juju/Documents/projects/angular-react-meetup/js/app.js":[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -169,9 +172,24 @@ module.exports = function(idx) {
     return 'http://api.randomuser.me/portraits/' + sex + '/' + num + '.jpg';
 };
 
+},{}],"/Users/juju/Documents/projects/angular-react-meetup/js/customFilter.js":[function(require,module,exports){
+'use strict';
+
+module.exports = function(arr, query) {
+    var regFilter = new RegExp(query, 'i');
+    var rows = arr.filter(function(item) {
+        return (regFilter.exec(item.first) || regFilter.exec(item.last) || regFilter.exec(item.email));
+    });
+    return rows;
+}
+
 },{}],"/Users/juju/Documents/projects/angular-react-meetup/js/data.js":[function(require,module,exports){
+'use strict';
+
 var first = ['Anthony', 'Alexandre', 'Arielle', 'Véro', 'Claudine', 'Jean', 'Fred', 'Danny', 'Alexis', 'Guillaume', 'Rémi', 'Julien', 'Tony', 'Douglas', 'Olivier', 'Patrick', 'Raphaël', 'Camille', 'Emilie', 'Sophie', 'Céline', 'Audrey'];
 var last = ['Daniel', 'Robert', 'Dubois', 'Dupont', 'Morob', 'Bucher', 'Machin', 'Truc', 'Delarue', 'Tranc', 'Lolipop', 'Marcadet', 'Baer', 'Malek'];
+
+var config = require('../config');
 
 function getRandomItem(arr) {
     return arr[Math.floor(Math.random()*arr.length)];
@@ -191,7 +209,7 @@ function createItem() {
     return item;
 }
 var data = [],
-    records = 1000;
+    records = config.maxRows;
 
 for (var i=0; i<records;i++) {
     data.push(createItem());
@@ -200,7 +218,7 @@ for (var i=0; i<records;i++) {
 
 module.exports = data;
 
-},{}],"/Users/juju/Documents/projects/angular-react-meetup/js/react/ExampleTable.jsx":[function(require,module,exports){
+},{"../config":"/Users/juju/Documents/projects/angular-react-meetup/config.js"}],"/Users/juju/Documents/projects/angular-react-meetup/js/react/ExampleTable.jsx":[function(require,module,exports){
 'use strict';
 
 
@@ -208,9 +226,7 @@ var React = require('react');
 var _ = require('lodash');
 
 var avatar = require('../avatar.js');
-
-var config = require('../../config.js');
-
+var customFilter = require('../customFilter.js');
 
 
 function getAge(value) {
@@ -242,7 +258,7 @@ var Row  = React.createClass({displayName: "Row",
         }
     },
     render: function() {
-        return React.createElement("tr", {className: this.state.checked?'checked':''}, 
+        var row =  React.createElement("tr", {className: this.state.checked?'checked':''}, 
                     React.createElement("td", null, React.createElement("input", {type: "checkbox", defaultChecked: this.state.checked, onClick: this.onClick})), 
                     React.createElement("td", null,  formatFirst(this.props.data.first) ), 
                     React.createElement("td", null,  this.props.data.last), 
@@ -250,7 +266,8 @@ var Row  = React.createClass({displayName: "Row",
                     React.createElement("td", null, React.createElement("img", {width: "50", src:  avatar(this.props.data.id, {}) })), 
                     React.createElement("td", null,  getAge(this.props.data.ddn) ), 
                     React.createElement("td", {className: this.props.rowCls})
-                )
+                );
+        return row;
     }
 });
 
@@ -275,11 +292,7 @@ var ExampleTable = React.createClass({displayName: "ExampleTable",
     },
     getRows: function() {
         if (this.state.query) {
-            var regFilter = new RegExp(this.state.query, 'i');
-            var rows = this.props.data.filter(function(item) {
-                return (regFilter.exec(item.first) || regFilter.exec(item.last) || regFilter.exec(item.email));
-            });
-            return rows;
+            return customFilter(this.props.data, this.state.query);
         } else {
             return this.props.data;
         }
@@ -319,7 +332,7 @@ var ExampleTable = React.createClass({displayName: "ExampleTable",
 
 module.exports = ExampleTable;
 
-},{"../../config.js":"/Users/juju/Documents/projects/angular-react-meetup/config.js","../avatar.js":"/Users/juju/Documents/projects/angular-react-meetup/js/avatar.js","lodash":"/Users/juju/Documents/projects/angular-react-meetup/node_modules/lodash/dist/lodash.js","react":"/Users/juju/Documents/projects/angular-react-meetup/node_modules/react/react.js"}],"/Users/juju/Documents/projects/angular-react-meetup/node_modules/angular/angular.js":[function(require,module,exports){
+},{"../avatar.js":"/Users/juju/Documents/projects/angular-react-meetup/js/avatar.js","../customFilter.js":"/Users/juju/Documents/projects/angular-react-meetup/js/customFilter.js","lodash":"/Users/juju/Documents/projects/angular-react-meetup/node_modules/lodash/dist/lodash.js","react":"/Users/juju/Documents/projects/angular-react-meetup/node_modules/react/react.js"}],"/Users/juju/Documents/projects/angular-react-meetup/node_modules/angular/angular.js":[function(require,module,exports){
 /**
  * @license AngularJS v1.3.9
  * (c) 2010-2014 Google, Inc. http://angularjs.org

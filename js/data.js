@@ -1,5 +1,9 @@
+'use strict';
+
 var first = ['Anthony', 'Alexandre', 'Arielle', 'Véro', 'Claudine', 'Jean', 'Fred', 'Danny', 'Alexis', 'Guillaume', 'Rémi', 'Julien', 'Tony', 'Douglas', 'Olivier', 'Patrick', 'Raphaël', 'Camille', 'Emilie', 'Sophie', 'Céline', 'Audrey'];
 var last = ['Daniel', 'Robert', 'Dubois', 'Dupont', 'Morob', 'Bucher', 'Machin', 'Truc', 'Delarue', 'Tranc', 'Lolipop', 'Marcadet', 'Baer', 'Malek'];
+
+var config = require('../config');
 
 function getRandomItem(arr) {
     return arr[Math.floor(Math.random()*arr.length)];
@@ -19,7 +23,7 @@ function createItem() {
     return item;
 }
 var data = [],
-    records = 1000;
+    records = config.maxRows;
 
 for (var i=0; i<records;i++) {
     data.push(createItem());

@@ -14,9 +14,8 @@
     </thead>
     <tbody>
         <tr
-            ng-repeat="row in data|filter:query track by row.id"
+            ng-repeat="row in data|customFilter:query track by row.id"
             ng-class="{checked: row.checked}">
-
             <td><input type="checkbox" ng-checked="row.checked" ng-click="Ctrl.clickRow(row)"/></td>
             <td>{{ Ctrl.formatFirst(row.first) }}</td>
             <td>{{ row.last }}</td>

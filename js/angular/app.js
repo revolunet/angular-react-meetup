@@ -4,10 +4,9 @@
 var angular = require('angular');
 var fs = require('fs');
 var data = require('../data');
-var config = require('../../config.js');
 
 var avatar = require('../avatar.js');
-
+var customFilter = require('../customFilter.js');
 
 angular.module('Demo', [])
 
@@ -29,6 +28,12 @@ angular.module('Demo', [])
         console.log('nothing!');
     };
 
+})
+
+.filter('customFilter', function() {
+    var func = customFilter;
+    func.$stateful = true;
+    return func;
 })
 
 .value('counters', {
@@ -59,7 +64,7 @@ angular.module('Demo', [])
 .filter('avatar', function() {
     var func = avatar;
     func.$stateful = true;
-    return avatar;
+    return func;
 })
 
 .directive('scopeIsolate', function() {
@@ -110,8 +115,6 @@ angular.module('Demo', [])
         },
         controllerAs: 'Ctrl',
         controller: function($scope, $timeout) {
-
-            $scope.maxRows = config.maxRows;
 
             this.formatFirst = function(value) {
                 counters.func++;

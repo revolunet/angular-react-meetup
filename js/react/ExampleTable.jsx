@@ -5,9 +5,7 @@ var React = require('react');
 var _ = require('lodash');
 
 var avatar = require('../avatar.js');
-
-var config = require('../../config.js');
-
+var customFilter = require('../customFilter.js');
 
 
 function getAge(value) {
@@ -39,7 +37,7 @@ var Row  = React.createClass({
         }
     },
     render: function() {
-        return <tr className={this.state.checked?'checked':''}>
+        var row =  <tr className={this.state.checked?'checked':''}>
                     <td><input type="checkbox" defaultChecked={this.state.checked} onClick={this.onClick}/></td>
                     <td>{ formatFirst(this.props.data.first) }</td>
                     <td>{ this.props.data.last }</td>
@@ -47,7 +45,8 @@ var Row  = React.createClass({
                     <td><img width="50" src={ avatar(this.props.data.id, {}) }/></td>
                     <td>{ getAge(this.props.data.ddn) }</td>
                     <td className={this.props.rowCls}></td>
-                </tr>
+                </tr>;
+        return row;
     }
 });
 
@@ -72,11 +71,7 @@ var ExampleTable = React.createClass({
     },
     getRows: function() {
         if (this.state.query) {
-            var regFilter = new RegExp(this.state.query, 'i');
-            var rows = this.props.data.filter(function(item) {
-                return (regFilter.exec(item.first) || regFilter.exec(item.last) || regFilter.exec(item.email));
-            });
-            return rows;
+            return customFilter(this.props.data, this.state.query);
         } else {
             return this.props.data;
         }
