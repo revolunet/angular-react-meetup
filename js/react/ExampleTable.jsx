@@ -4,6 +4,8 @@
 var React = require('react');
 var _ = require('lodash');
 
+var avatar = require('../avatar.js');
+
 var config = require('../../config.js');
 
 
@@ -26,12 +28,23 @@ var Row  = React.createClass({
         onClick: React.PropTypes.func,
         rowCls: React.PropTypes.string
     },
+    onClick: function() {
+        this.setState({
+            checked: !this.state.checked
+        })
+    },
+    getInitialState: function() {
+        return {
+            checked: this.props.data.checked
+        }
+    },
     render: function() {
-        return <tr className={this.props.data.checked?'checked':''}>
-                    <td><input type="checkbox" defaultChecked={this.props.data.checked} onClick={this.props.onClick}/></td>
+        return <tr className={this.state.checked?'checked':''}>
+                    <td><input type="checkbox" defaultChecked={this.state.checked} onClick={this.onClick}/></td>
                     <td>{ formatFirst(this.props.data.first) }</td>
                     <td>{ this.props.data.last }</td>
                     <td>{ this.props.data.email }</td>
+                    <td><img width="50" src={ avatar(this.props.data.id, {}) }/></td>
                     <td>{ getAge(this.props.data.ddn) }</td>
                     <td className={this.props.rowCls}></td>
                 </tr>
@@ -44,23 +57,8 @@ var ExampleTable = React.createClass({
     },
     getInitialState: function() {
         return {
-            query: '',
-            data: this.props.data
+            query: ''
         };
-    },
-    onRowClick: function(row) {
-        row.checked = true;
-        // var self = this;
-        // setTimeout(function() {
-        //     var clone = self.state.data.slice();
-        //     clone.splice(clone.indexOf(row), 1);
-        //     self.setState({
-        //         data: clone
-        //     });
-        // }, 50);
-        this.setState({
-            data:this.state.data
-        });
     },
     counters: {
         func: 0,
@@ -75,38 +73,44 @@ var ExampleTable = React.createClass({
     getRows: function() {
         if (this.state.query) {
             var regFilter = new RegExp(this.state.query, 'i');
-            var rows = this.state.data.filter(function(item) {
+            var rows = this.props.data.filter(function(item) {
                 return (regFilter.exec(item.first) || regFilter.exec(item.last) || regFilter.exec(item.email));
             });
             return rows;
         } else {
-            return this.state.data;
+            return this.props.data;
         }
+    },
+    onClick: function() {
+        console.log('nothing!');
     },
     render: function() {
         var self = this;
-
         this.counters.render++;
        // console.log(this.counters);
-        var query = this.state.query;
-        return <table className="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>first</th>
-                        <th>last</th>
-                        <th>email</th>
-                        <th>age</th>
-                        <th>status</th>
-                    </tr>
-                </thead>
-                <input value={query} onChange={this.onUpdateQuery} placeholder="filter..."/>
-                <tbody>
-                    {this.getRows().map(function(row, i) {
-                        return <Row key={row.id} data={row} rowCls={i%2==0?'odd':''} onClick={this.onRowClick.bind(this, row)}/>
-                    }, this)}
-                </tbody>
-            </table>;
+        return <div>
+                <button className="btn btn-danger" onClick={this.onClick}>nothing</button>
+                <br/><br/>
+                <table className="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>first</th>
+                            <th>last</th>
+                            <th>email</th>
+                            <th>pic</th>
+                            <th>age</th>
+                            <th>status</th>
+                        </tr>
+                    </thead>
+                    <input value={this.state.query} onChange={this.onUpdateQuery} placeholder="filter..."/>
+                    <tbody>
+                        {this.getRows().map(function(row, i) {
+                            return <Row key={row.id} data={row} rowCls={i%2==0?'odd':''}/>
+                        }, this)}
+                    </tbody>
+                </table>
+            </div>;
     }
 });
 

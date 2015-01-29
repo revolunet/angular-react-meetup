@@ -6,6 +6,9 @@ var fs = require('fs');
 var data = require('../data');
 var config = require('../../config.js');
 
+var avatar = require('../avatar.js');
+
+
 angular.module('Demo', [])
 
 .controller('DemoController', function($scope, $http, counters) {
@@ -53,11 +56,17 @@ angular.module('Demo', [])
     return logFilter;
 })
 
+.filter('avatar', function() {
+    var func = avatar;
+    func.$stateful = true;
+    return avatar;
+})
+
 .directive('scopeIsolate', function() {
     return {
         restrict: 'E',
         scope: {},
-        template: '<div>scopeIsolate {{\'scopeIsolate filter\'|log}} </div>',
+        template: '<div>isolated model : {{\'scopeIsolate filter\'|log}} <input ng-model="isolateModel"/></div>',
         link: function(scope) {
             scope.$watch(function() {
                 console.log('watch scope: {}');
@@ -70,7 +79,7 @@ angular.module('Demo', [])
     return {
         restrict: 'E',
         scope: false,
-        template: '<div>scopePrivate  {{\'scopePrivate filter\'|log}}</div>',
+        template: '<div></div>',
         link: function(scope) {
             scope.$watch(function() {
                 console.log('watch scope: false');
@@ -83,7 +92,7 @@ angular.module('Demo', [])
     return {
         restrict: 'E',
         scope: true,
-        template: '<div>scopeClone  {{\'scopeClone filter\'|log}}</div>',
+        template: '<div></div>',
         link: function(scope) {
             scope.$watch(function() {
                 console.log('watch scope: true');

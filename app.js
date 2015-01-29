@@ -13,6 +13,9 @@ var angular = require('angular');
 var data = require('../data');
 var config = require('../../config.js');
 
+var avatar = require('../avatar.js');
+
+
 angular.module('Demo', [])
 
 .controller('DemoController', function($scope, $http, counters) {
@@ -60,11 +63,17 @@ angular.module('Demo', [])
     return logFilter;
 })
 
+.filter('avatar', function() {
+    var func = avatar;
+    func.$stateful = true;
+    return avatar;
+})
+
 .directive('scopeIsolate', function() {
     return {
         restrict: 'E',
         scope: {},
-        template: '<div>scopeIsolate {{\'scopeIsolate filter\'|log}} </div>',
+        template: '<div>isolated model : {{\'scopeIsolate filter\'|log}} <input ng-model="isolateModel"/></div>',
         link: function(scope) {
             scope.$watch(function() {
                 console.log('watch scope: {}');
@@ -77,7 +86,7 @@ angular.module('Demo', [])
     return {
         restrict: 'E',
         scope: false,
-        template: '<div>scopePrivate  {{\'scopePrivate filter\'|log}}</div>',
+        template: '<div></div>',
         link: function(scope) {
             scope.$watch(function() {
                 console.log('watch scope: false');
@@ -90,7 +99,7 @@ angular.module('Demo', [])
     return {
         restrict: 'E',
         scope: true,
-        template: '<div>scopeClone  {{\'scopeClone filter\'|log}}</div>',
+        template: '<div></div>',
         link: function(scope) {
             scope.$watch(function() {
                 console.log('watch scope: true');
@@ -102,7 +111,7 @@ angular.module('Demo', [])
 .directive('tableExample', function(counters) {
     return {
         restrict: 'E',
-        template: Buffer("PGlucHV0IG5nLW1vZGVsPSJxdWVyeSIgcGxhY2Vob2xkZXI9ImZpbHRlci4uLiIvPgoKPHRhYmxlIGNsYXNzPSJ0YWJsZSB0YWJsZS1ib3JkZXJlZCB0YWJsZS1zdHJpcGVkIj4KICAgIDx0aGVhZD4KICAgICAgICA8dHI+CiAgICAgICAgICAgIDx0aD48L3RoPgogICAgICAgICAgICA8dGg+Zmlyc3Q8L3RoPgogICAgICAgICAgICA8dGg+bGFzdDwvdGg+CiAgICAgICAgICAgIDx0aD5lbWFpbDwvdGg+CiAgICAgICAgICAgIDx0aD5hZ2U8L3RoPgogICAgICAgICAgICA8dGg+c3RhdHVzPC90aD4KICAgICAgICA8L3RyPgogICAgPC90aGVhZD4KICAgIDx0Ym9keT4KICAgICAgICA8dHIKICAgICAgICAgICAgbmctcmVwZWF0PSJyb3cgaW4gZGF0YXxmaWx0ZXI6cXVlcnkgdHJhY2sgYnkgcm93LmlkIgogICAgICAgICAgICBuZy1jbGFzcz0ie2NoZWNrZWQ6IHJvdy5jaGVja2VkfSI+CgogICAgICAgICAgICA8dGQ+PGlucHV0IHR5cGU9ImNoZWNrYm94IiBuZy1jaGVja2VkPSJyb3cuY2hlY2tlZCIgbmctY2xpY2s9IkN0cmwuY2xpY2tSb3cocm93KSIvPjwvdGQ+CiAgICAgICAgICAgIDx0ZD57eyBDdHJsLmZvcm1hdEZpcnN0KHJvdy5maXJzdCkgfX08L3RkPgogICAgICAgICAgICA8dGQ+e3sgcm93Lmxhc3QgfX08L3RkPgogICAgICAgICAgICA8dGQ+e3sgcm93LmVtYWlsIH19PC90ZD4KICAgICAgICAgICAgPHRkPnt7IHJvdy5kZG58c2luY2UgfX08L3RkPgogICAgICAgICAgICA8dGQgbmctY2xhc3M9IntvZGQ6ICRpbmRleCUyPT0wfSI+PC90ZD4KICAgICAgICA8L3RyPgogICAgPC90Ym9keT4KCjwvdGFibGU+Cg==","base64").toString(),
+        template: Buffer("PGlucHV0IG5nLW1vZGVsPSJxdWVyeSIgcGxhY2Vob2xkZXI9ImZpbHRlci4uLiIvPgoKPHRhYmxlIGNsYXNzPSJ0YWJsZSB0YWJsZS1ib3JkZXJlZCB0YWJsZS1zdHJpcGVkIj4KICAgIDx0aGVhZD4KICAgICAgICA8dHI+CiAgICAgICAgICAgIDx0aD48L3RoPgogICAgICAgICAgICA8dGg+Zmlyc3Q8L3RoPgogICAgICAgICAgICA8dGg+bGFzdDwvdGg+CiAgICAgICAgICAgIDx0aD5lbWFpbDwvdGg+CiAgICAgICAgICAgIDx0aD5waWM8L3RoPgogICAgICAgICAgICA8dGg+YWdlPC90aD4KICAgICAgICAgICAgPHRoPnN0YXR1czwvdGg+CiAgICAgICAgPC90cj4KICAgIDwvdGhlYWQ+CiAgICA8dGJvZHk+CiAgICAgICAgPHRyCiAgICAgICAgICAgIG5nLXJlcGVhdD0icm93IGluIGRhdGF8ZmlsdGVyOnF1ZXJ5IHRyYWNrIGJ5IHJvdy5pZCIKICAgICAgICAgICAgbmctY2xhc3M9IntjaGVja2VkOiByb3cuY2hlY2tlZH0iPgoKICAgICAgICAgICAgPHRkPjxpbnB1dCB0eXBlPSJjaGVja2JveCIgbmctY2hlY2tlZD0icm93LmNoZWNrZWQiIG5nLWNsaWNrPSJDdHJsLmNsaWNrUm93KHJvdykiLz48L3RkPgogICAgICAgICAgICA8dGQ+e3sgQ3RybC5mb3JtYXRGaXJzdChyb3cuZmlyc3QpIH19PC90ZD4KICAgICAgICAgICAgPHRkPnt7IHJvdy5sYXN0IH19PC90ZD4KICAgICAgICAgICAgPHRkPnt7IHJvdy5lbWFpbCB9fTwvdGQ+CiAgICAgICAgICAgIDx0ZD48aW1nIG5nLXNyYz0ie3sgcm93LmlkfGF2YXRhciB9fSIgd2lkdGg9IjUwIi8+PC90ZD4KICAgICAgICAgICAgPHRkPnt7IHJvdy5kZG58c2luY2UgfX08L3RkPgogICAgICAgICAgICA8dGQgbmctY2xhc3M9IntvZGQ6ICRpbmRleCUyPT0wfSI+PC90ZD4KICAgICAgICA8L3RyPgogICAgPC90Ym9keT4KCjwvdGFibGU+Cg==","base64").toString(),
         scope: {
             data:'='
         },
@@ -127,7 +136,7 @@ window.loadng = function() {
 };
 
 }).call(this,require("buffer").Buffer)
-},{"../../config.js":"/Users/juju/Documents/projects/angular-react-meetup/config.js","../data":"/Users/juju/Documents/projects/angular-react-meetup/js/data.js","angular":"/Users/juju/Documents/projects/angular-react-meetup/node_modules/angular/index.js","buffer":"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/buffer/index.js"}],"/Users/juju/Documents/projects/angular-react-meetup/js/app.js":[function(require,module,exports){
+},{"../../config.js":"/Users/juju/Documents/projects/angular-react-meetup/config.js","../avatar.js":"/Users/juju/Documents/projects/angular-react-meetup/js/avatar.js","../data":"/Users/juju/Documents/projects/angular-react-meetup/js/data.js","angular":"/Users/juju/Documents/projects/angular-react-meetup/node_modules/angular/index.js","buffer":"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/buffer/index.js"}],"/Users/juju/Documents/projects/angular-react-meetup/js/app.js":[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -150,7 +159,17 @@ window.loadreact = function() {
     );
 }
 
-},{"./angular/app.js":"/Users/juju/Documents/projects/angular-react-meetup/js/angular/app.js","./data.js":"/Users/juju/Documents/projects/angular-react-meetup/js/data.js","./react/ExampleTable.jsx":"/Users/juju/Documents/projects/angular-react-meetup/js/react/ExampleTable.jsx","react":"/Users/juju/Documents/projects/angular-react-meetup/node_modules/react/react.js"}],"/Users/juju/Documents/projects/angular-react-meetup/js/data.js":[function(require,module,exports){
+},{"./angular/app.js":"/Users/juju/Documents/projects/angular-react-meetup/js/angular/app.js","./data.js":"/Users/juju/Documents/projects/angular-react-meetup/js/data.js","./react/ExampleTable.jsx":"/Users/juju/Documents/projects/angular-react-meetup/js/react/ExampleTable.jsx","react":"/Users/juju/Documents/projects/angular-react-meetup/node_modules/react/react.js"}],"/Users/juju/Documents/projects/angular-react-meetup/js/avatar.js":[function(require,module,exports){
+'use strict';
+
+module.exports = function(idx) {
+    var sex = (idx%2)?'women':'men',
+        num = idx % 100;
+
+    return 'http://api.randomuser.me/portraits/' + sex + '/' + num + '.jpg';
+};
+
+},{}],"/Users/juju/Documents/projects/angular-react-meetup/js/data.js":[function(require,module,exports){
 var first = ['Anthony', 'Alexandre', 'Arielle', 'Véro', 'Claudine', 'Jean', 'Fred', 'Danny', 'Alexis', 'Guillaume', 'Rémi', 'Julien', 'Tony', 'Douglas', 'Olivier', 'Patrick', 'Raphaël', 'Camille', 'Emilie', 'Sophie', 'Céline', 'Audrey'];
 var last = ['Daniel', 'Robert', 'Dubois', 'Dupont', 'Morob', 'Bucher', 'Machin', 'Truc', 'Delarue', 'Tranc', 'Lolipop', 'Marcadet', 'Baer', 'Malek'];
 
@@ -188,6 +207,8 @@ module.exports = data;
 var React = require('react');
 var _ = require('lodash');
 
+var avatar = require('../avatar.js');
+
 var config = require('../../config.js');
 
 
@@ -210,12 +231,23 @@ var Row  = React.createClass({displayName: "Row",
         onClick: React.PropTypes.func,
         rowCls: React.PropTypes.string
     },
+    onClick: function() {
+        this.setState({
+            checked: !this.state.checked
+        })
+    },
+    getInitialState: function() {
+        return {
+            checked: this.props.data.checked
+        }
+    },
     render: function() {
-        return React.createElement("tr", {className: this.props.data.checked?'checked':''}, 
-                    React.createElement("td", null, React.createElement("input", {type: "checkbox", defaultChecked: this.props.data.checked, onClick: this.props.onClick})), 
+        return React.createElement("tr", {className: this.state.checked?'checked':''}, 
+                    React.createElement("td", null, React.createElement("input", {type: "checkbox", defaultChecked: this.state.checked, onClick: this.onClick})), 
                     React.createElement("td", null,  formatFirst(this.props.data.first) ), 
                     React.createElement("td", null,  this.props.data.last), 
                     React.createElement("td", null,  this.props.data.email), 
+                    React.createElement("td", null, React.createElement("img", {width: "50", src:  avatar(this.props.data.id, {}) })), 
                     React.createElement("td", null,  getAge(this.props.data.ddn) ), 
                     React.createElement("td", {className: this.props.rowCls})
                 )
@@ -228,23 +260,8 @@ var ExampleTable = React.createClass({displayName: "ExampleTable",
     },
     getInitialState: function() {
         return {
-            query: '',
-            data: this.props.data
+            query: ''
         };
-    },
-    onRowClick: function(row) {
-        row.checked = true;
-        // var self = this;
-        // setTimeout(function() {
-        //     var clone = self.state.data.slice();
-        //     clone.splice(clone.indexOf(row), 1);
-        //     self.setState({
-        //         data: clone
-        //     });
-        // }, 50);
-        this.setState({
-            data:this.state.data
-        });
     },
     counters: {
         func: 0,
@@ -259,36 +276,42 @@ var ExampleTable = React.createClass({displayName: "ExampleTable",
     getRows: function() {
         if (this.state.query) {
             var regFilter = new RegExp(this.state.query, 'i');
-            var rows = this.state.data.filter(function(item) {
+            var rows = this.props.data.filter(function(item) {
                 return (regFilter.exec(item.first) || regFilter.exec(item.last) || regFilter.exec(item.email));
             });
             return rows;
         } else {
-            return this.state.data;
+            return this.props.data;
         }
+    },
+    onClick: function() {
+        console.log('nothing!');
     },
     render: function() {
         var self = this;
-
         this.counters.render++;
        // console.log(this.counters);
-        var query = this.state.query;
-        return React.createElement("table", {className: "table table-bordered table-striped"}, 
-                React.createElement("thead", null, 
-                    React.createElement("tr", null, 
-                        React.createElement("th", null), 
-                        React.createElement("th", null, "first"), 
-                        React.createElement("th", null, "last"), 
-                        React.createElement("th", null, "email"), 
-                        React.createElement("th", null, "age"), 
-                        React.createElement("th", null, "status")
+        return React.createElement("div", null, 
+                React.createElement("button", {className: "btn btn-danger", onClick: this.onClick}, "nothing"), 
+                React.createElement("br", null), React.createElement("br", null), 
+                React.createElement("table", {className: "table table-bordered table-striped"}, 
+                    React.createElement("thead", null, 
+                        React.createElement("tr", null, 
+                            React.createElement("th", null), 
+                            React.createElement("th", null, "first"), 
+                            React.createElement("th", null, "last"), 
+                            React.createElement("th", null, "email"), 
+                            React.createElement("th", null, "pic"), 
+                            React.createElement("th", null, "age"), 
+                            React.createElement("th", null, "status")
+                        )
+                    ), 
+                    React.createElement("input", {value: this.state.query, onChange: this.onUpdateQuery, placeholder: "filter..."}), 
+                    React.createElement("tbody", null, 
+                        this.getRows().map(function(row, i) {
+                            return React.createElement(Row, {key: row.id, data: row, rowCls: i%2==0?'odd':''})
+                        }, this)
                     )
-                ), 
-                React.createElement("input", {value: query, onChange: this.onUpdateQuery, placeholder: "filter..."}), 
-                React.createElement("tbody", null, 
-                    this.getRows().map(function(row, i) {
-                        return React.createElement(Row, {key: row.id, data: row, rowCls: i%2==0?'odd':'', onClick: this.onRowClick.bind(this, row)})
-                    }, this)
                 )
             );
     }
@@ -296,7 +319,7 @@ var ExampleTable = React.createClass({displayName: "ExampleTable",
 
 module.exports = ExampleTable;
 
-},{"../../config.js":"/Users/juju/Documents/projects/angular-react-meetup/config.js","lodash":"/Users/juju/Documents/projects/angular-react-meetup/node_modules/lodash/dist/lodash.js","react":"/Users/juju/Documents/projects/angular-react-meetup/node_modules/react/react.js"}],"/Users/juju/Documents/projects/angular-react-meetup/node_modules/angular/angular.js":[function(require,module,exports){
+},{"../../config.js":"/Users/juju/Documents/projects/angular-react-meetup/config.js","../avatar.js":"/Users/juju/Documents/projects/angular-react-meetup/js/avatar.js","lodash":"/Users/juju/Documents/projects/angular-react-meetup/node_modules/lodash/dist/lodash.js","react":"/Users/juju/Documents/projects/angular-react-meetup/node_modules/react/react.js"}],"/Users/juju/Documents/projects/angular-react-meetup/node_modules/angular/angular.js":[function(require,module,exports){
 /**
  * @license AngularJS v1.3.9
  * (c) 2010-2014 Google, Inc. http://angularjs.org
