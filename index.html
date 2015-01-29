@@ -1,0 +1,54 @@
+<html>
+    <meta charset="UTF-8">
+    <title>angular, react</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+    tbody, thead { display: block; overflow-y: auto; }
+    td:nth-child(1), th:nth-child(1) { width: 50px; }
+    td:nth-child(2), th:nth-child(2) { width: 150px; }
+    td:nth-child(3), th:nth-child(3) { width: 200px; }
+    td:nth-child(4), th:nth-child(4) { width: 250px; }
+    td:nth-child(5), th:nth-child(5) { width: 150px; }
+    td:nth-child(6), th:nth-child(6) { width: 50px; }
+    .odd {
+        background-color:yellow;
+    }
+    tbody {
+          display: block;
+          overflow: auto;
+          width: 100%;
+          height: 300px;
+    }
+    tr.checked * {
+        text-decoration: line-through;
+    }
+    </style>
+    <body class="container">
+
+        <br><br>
+        <button onclick="loadng()">Load Angular</button>
+        <button onclick="loadreact()">Load React</button>
+
+        <div id="ngdemo" ng-controller="DemoController">
+            <h1>ng example</h1>
+            <scope-isolate></scope-isolate>
+            <scope-private></scope-private>
+            <scope-clone></scope-clone>
+            <button class="btn btn-primary" ng-click="get()">test GET</button>
+            <br>
+            something else: <input ng-model="other">
+            <br>
+            <button class="btn btn-danger" ng-click="clickme()">click me</button>
+            <br><br>
+            <table-example data="data"></table-example>
+        </div>
+
+        <div>
+            <h1>react example</h1>
+            <div id="reactdemo"></div>
+        </div>
+
+
+    </body>
+    <script src="app.js"></script>
+</html>

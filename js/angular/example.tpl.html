@@ -1,0 +1,25 @@
+<input ng-model="query" placeholder="filter..."/>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th></th>
+            <th>first</th>
+            <th>last</th>
+            <th>email</th>
+            <th>age</th>
+            <th>status</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="row in data|filter:query track by row.id" ng-class="{checked: row.checked}">
+            <td><input type="checkbox" ng-click="Ctrl.clickRow(row)"/></td>
+            <td>{{ Ctrl.formatFirst(row.first) }}</td>
+            <td>{{ row.last }}</td>
+            <td>{{ row.email }}</td>
+            <td>{{ row.ddn|since }}</td>
+            <td ng-class="{odd: $index%2==0}"></td>
+        </tr>
+    </tbody>
+
+</table>
