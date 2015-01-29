@@ -77,7 +77,7 @@ Pourquoi et comment intégrer React dans des applications Angular
 ---
 class: word
 
-Experience
+Expérience
 
 ???
 
@@ -99,7 +99,7 @@ working from @NUMA Dev'Floor, best place for freelances and startups
 
 Experimenting with react on new mobile project
 
--> retour d'expérience
+-> retour d'expérience, feedback needed !
 
 ---
 class: word
@@ -125,13 +125,13 @@ Data binding
 
 ???
 
-Le data-binding est la feature la plus appréciée et la plus puissante d'Angular, mais le fonctionnement actuel pose des challenges de performance :
+Le data-binding est la feature la plus appréciée et la plus puissante d'Angular, mais le fonctionnement actuel pose des challenges de performance.
 
-- Cycle de digest global à l'application : n'importe quel évènement dans votre app va re-évaluer tous vos bindings : clicks, requetes http, promises, changement de modèle... en cas de mise à jour d'un modèle c'est n digests qui sont executés jusqu'a stabilisation (donc minimum 2 cycles)
+- Bete et méchant : le cycle de digest est global à l'application : n'importe quel évènement dans votre app va re-évaluer tous vos bindings : ng-click, ng-show, ng-class... requetes http, promises, changement de modèle... en cas de mise à jour d'un modèle c'est n boucles qui sont executés jusqu'a stabilisation (donc minimum 2 cycles)
 
 - 60fps === Temps de digest doit être < 16ms pour assurer la fluidité
 
-- Peu de maitrise possible des cycles de digest
+- Pas de maitrise possible des cycles de digest
 
 ---
 class: word
@@ -140,12 +140,14 @@ ReactJS
 
 ???
 
+- Microframework
+
 - Uniquement les directives (non-standard web components)
     - virtual DOM : fix slow DOM updates
     - event delegation : reduce listeners
     - internal state management
 
-- Simple, straightforward, explicite : en gros, une fonction render qui renvoie le HTML final
+- Simple, straightforward, explicite : en gros, une fonction render qui renvoie le HTML voulu. Le virtual DOM fait le diff et update le DOM.
 
 - apporte une vraie isolation des composants
 
@@ -164,15 +166,17 @@ Montre uniquement les perfs brutes sur un cas précis et isolé
 
 ???
 
+- plus on a de DOM et de bindings, plus le cycle digest sera long
+
 - 'track by' indispensable
 
 - temps de rendu initial sensiblement équivalent
 
-- temps de MAJ optimisé sur react
+- temps de MAJ optimisé sur react (x4)
 
-- 1015 listeners VS 15
+- 1015 listeners VS 15. better memory footprint
 
-- interactions précises et explicites avec react
+- fonctionnement interne du widget isolé du reste de l'app
 
 ---
 class: word
