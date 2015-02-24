@@ -1,3 +1,3 @@
 module.exports = {
-    maxRows: 1000
+    maxRows: 500
 };

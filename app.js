@@ -1,6 +1,6 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/Users/juju/Documents/projects/angular-react-meetup/config.js":[function(require,module,exports){
 module.exports = {
-    maxRows: 1000
+    maxRows: 500
 };
 
 },{}],"/Users/juju/Documents/projects/angular-react-meetup/js/angular/app.js":[function(require,module,exports){
@@ -116,7 +116,7 @@ angular.module('Demo', [])
 .directive('tableExample', function(counters) {
     return {
         restrict: 'E',
-        template: Buffer("PGlucHV0IG5nLW1vZGVsPSJxdWVyeSIgcGxhY2Vob2xkZXI9ImZpbHRlci4uLiIvPgoKPHRhYmxlIGNsYXNzPSJ0YWJsZSB0YWJsZS1ib3JkZXJlZCB0YWJsZS1zdHJpcGVkIj4KICAgIDx0aGVhZD4KICAgICAgICA8dHI+CiAgICAgICAgICAgIDx0aD48L3RoPgogICAgICAgICAgICA8dGg+Zmlyc3Q8L3RoPgogICAgICAgICAgICA8dGg+bGFzdDwvdGg+CiAgICAgICAgICAgIDx0aD5lbWFpbDwvdGg+CiAgICAgICAgICAgIDx0aD5waWM8L3RoPgogICAgICAgICAgICA8dGg+YWdlPC90aD4KICAgICAgICAgICAgPHRoPnN0YXR1czwvdGg+CiAgICAgICAgPC90cj4KICAgIDwvdGhlYWQ+CiAgICA8dGJvZHk+CiAgICAgICAgPHRyCiAgICAgICAgICAgIG5nLXJlcGVhdD0icm93IGluIGRhdGF8Y3VzdG9tRmlsdGVyOnF1ZXJ5IHRyYWNrIGJ5IHJvdy5pZCIKICAgICAgICAgICAgbmctY2xhc3M9IntjaGVja2VkOiByb3cuY2hlY2tlZH0iPgogICAgICAgICAgICA8dGQ+PGlucHV0IHR5cGU9ImNoZWNrYm94IiBuZy1jaGVja2VkPSJyb3cuY2hlY2tlZCIgbmctY2xpY2s9IkN0cmwuY2xpY2tSb3cocm93KSIvPjwvdGQ+CiAgICAgICAgICAgIDx0ZD57eyBDdHJsLmZvcm1hdEZpcnN0KHJvdy5maXJzdCkgfX08L3RkPgogICAgICAgICAgICA8dGQ+e3sgcm93Lmxhc3QgfX08L3RkPgogICAgICAgICAgICA8dGQ+e3sgcm93LmVtYWlsIH19PC90ZD4KICAgICAgICAgICAgPHRkPjxpbWcgbmctc3JjPSJ7eyByb3cuaWR8YXZhdGFyIH19IiB3aWR0aD0iNTAiLz48L3RkPgogICAgICAgICAgICA8dGQ+e3sgcm93LmRkbnxzaW5jZSB9fTwvdGQ+CiAgICAgICAgICAgIDx0ZCBuZy1jbGFzcz0ie29kZDogJGluZGV4JTI9PTB9Ij48L3RkPgogICAgICAgIDwvdHI+CiAgICA8L3Rib2R5PgoKPC90YWJsZT4K","base64").toString(),
+        template: Buffer("PGlucHV0IG5nLW1vZGVsPSJxdWVyeSIgcGxhY2Vob2xkZXI9ImZpbHRlci4uLiIvPgoKPHRhYmxlIGNsYXNzPSJ0YWJsZSB0YWJsZS1ib3JkZXJlZCB0YWJsZS1zdHJpcGVkIj4KICAgIDx0aGVhZD4KICAgICAgICA8dHI+CiAgICAgICAgICAgIDx0aD48L3RoPgogICAgICAgICAgICA8dGg+Zmlyc3Q8L3RoPgogICAgICAgICAgICA8dGg+bGFzdDwvdGg+CiAgICAgICAgICAgIDx0aD5lbWFpbDwvdGg+CiAgICAgICAgICAgIDx0aD5waWM8L3RoPgogICAgICAgICAgICA8dGg+YWdlPC90aD4KICAgICAgICAgICAgPHRoPnN0YXR1czwvdGg+CiAgICAgICAgPC90cj4KICAgIDwvdGhlYWQ+CiAgICA8dGJvZHk+CiAgICAgICAgPHRyCiAgICAgICAgICAgIG5nLXJlcGVhdD0icm93IGluIGRhdGF8Y3VzdG9tRmlsdGVyOnF1ZXJ5IHRyYWNrIGJ5IHJvdy5pZCIKICAgICAgICAgICAgbmctY2xhc3M9IntjaGVja2VkOiByb3cuY2hlY2tlZH0iPgogICAgICAgICAgICA8dGQ+PGlucHV0IHR5cGU9ImNoZWNrYm94IiBuZy1jaGVja2VkPSJyb3cuY2hlY2tlZCIgbmctY2xpY2s9IkN0cmwuY2xpY2tSb3cocm93KSIvPjwvdGQ+CiAgICAgICAgICAgIDx0ZD57eyBDdHJsLmZvcm1hdEZpcnN0KHJvdy5maXJzdCkgfX08L3RkPgogICAgICAgICAgICA8dGQ+e3sgcm93Lmxhc3QgfX08L3RkPgogICAgICAgICAgICA8dGQ+e3sgcm93LmVtYWlsIH19PC90ZD4KICAgICAgICAgICAgPHRkPjxpbWcgbmctY2xhc3M9IntncmV5c2NhbGU6IHJvdy5jaGVja2VkfSIgbmctc3JjPSJ7eyByb3cuaWR8YXZhdGFyIH19IiB3aWR0aD0iNTAiLz48L3RkPgogICAgICAgICAgICA8dGQ+e3sgcm93LmRkbnxzaW5jZSB9fTwvdGQ+CiAgICAgICAgICAgIDx0ZCBuZy1jbGFzcz0ie29kZDogJGluZGV4JTI9PTB9Ij48L3RkPgogICAgICAgIDwvdHI+CiAgICA8L3Rib2R5PgoKPC90YWJsZT4K","base64").toString(),
         scope: {
             data:'='
         },
@@ -153,6 +153,43 @@ var angulardemo = require('./angular/app.js');
 var ExampleTable = React.createFactory(require('./react/ExampleTable.jsx'));
 
 
+
+window.startAnim = function() {
+
+    function startJs() {
+        /* requestAnimationFrame based animation */
+        var tgts = document.querySelectorAll('.squarejs');
+        var start = (new Date()).getTime();
+
+        var degByms = 360/1000;
+
+        var rotation = 0;
+        function rotate() {
+          for (var i=0; i<tgts.length; i++) {
+            tgts[i].style.transform = 'rotateZ(' + rotation + 'deg)';
+          }
+
+          rotation = ((new Date()).getTime()- start) * degByms;
+          rotation %= 360;
+          window.requestAnimationFrame(rotate);
+        }
+
+        window.requestAnimationFrame(rotate);
+    }
+
+    function startCss() {
+        /* pure css animation */
+        var tgts = document.querySelectorAll('.squarecss');
+        document.querySelector('.squarecss');
+        for (var i=0; i<tgts.length; i++) {
+            tgts[i].classList.add('rotate');
+        }
+    }
+
+    startJs();
+    startCss();
+}
+
 window.loadreact = function() {
     React.render(
         ExampleTable({
@@ -165,14 +202,16 @@ window.loadreact = function() {
 },{"./angular/app.js":"/Users/juju/Documents/projects/angular-react-meetup/js/angular/app.js","./data.js":"/Users/juju/Documents/projects/angular-react-meetup/js/data.js","./react/ExampleTable.jsx":"/Users/juju/Documents/projects/angular-react-meetup/js/react/ExampleTable.jsx","react":"/Users/juju/Documents/projects/angular-react-meetup/node_modules/react/react.js"}],"/Users/juju/Documents/projects/angular-react-meetup/js/avatar.js":[function(require,module,exports){
 'use strict';
 
+var wait = require('./wait');
+
 module.exports = function(idx) {
     var sex = (idx%2)?'women':'men',
         num = idx % 100;
-
+    wait(1);
     return 'http://api.randomuser.me/portraits/' + sex + '/' + num + '.jpg';
 };
 
-},{}],"/Users/juju/Documents/projects/angular-react-meetup/js/customFilter.js":[function(require,module,exports){
+},{"./wait":"/Users/juju/Documents/projects/angular-react-meetup/js/wait.js"}],"/Users/juju/Documents/projects/angular-react-meetup/js/customFilter.js":[function(require,module,exports){
 'use strict';
 
 module.exports = function(arr, query) {
@@ -230,14 +269,11 @@ var customFilter = require('../customFilter.js');
 
 
 function getAge(value) {
-  //  self.counters.filter++;
     var ddn = new Date(value);
     return (new Date()).getFullYear() - ddn.getFullYear();
 }
 
 function formatFirst(first) {
-    //this.counters.func++;
-    // console.log(this.counters);
     return first.toUpperCase();
 }
 
@@ -263,7 +299,7 @@ var Row  = React.createClass({displayName: "Row",
                     React.createElement("td", null,  formatFirst(this.props.data.first) ), 
                     React.createElement("td", null,  this.props.data.last), 
                     React.createElement("td", null,  this.props.data.email), 
-                    React.createElement("td", null, React.createElement("img", {width: "50", src:  avatar(this.props.data.id, {}) })), 
+                    React.createElement("td", null, React.createElement("img", {width: "50", className: this.state.checked?'greyscale':'', src:  avatar(this.props.data.id, {}) })), 
                     React.createElement("td", null,  getAge(this.props.data.ddn) ), 
                     React.createElement("td", {className: this.props.rowCls})
                 );
@@ -279,11 +315,6 @@ var ExampleTable = React.createClass({displayName: "ExampleTable",
         return {
             query: ''
         };
-    },
-    counters: {
-        func: 0,
-        render: 0,
-        filter: 0
     },
     onUpdateQuery: function(event) {
         this.setState({
@@ -302,8 +333,6 @@ var ExampleTable = React.createClass({displayName: "ExampleTable",
     },
     render: function() {
         var self = this;
-        this.counters.render++;
-       // console.log(this.counters);
         return React.createElement("div", null, 
                 React.createElement("button", {className: "btn btn-danger", onClick: this.onClick}, "nothing"), 
                 React.createElement("br", null), React.createElement("br", null), 
@@ -332,7 +361,23 @@ var ExampleTable = React.createClass({displayName: "ExampleTable",
 
 module.exports = ExampleTable;
 
-},{"../avatar.js":"/Users/juju/Documents/projects/angular-react-meetup/js/avatar.js","../customFilter.js":"/Users/juju/Documents/projects/angular-react-meetup/js/customFilter.js","lodash":"/Users/juju/Documents/projects/angular-react-meetup/node_modules/lodash/dist/lodash.js","react":"/Users/juju/Documents/projects/angular-react-meetup/node_modules/react/react.js"}],"/Users/juju/Documents/projects/angular-react-meetup/node_modules/angular/angular.js":[function(require,module,exports){
+},{"../avatar.js":"/Users/juju/Documents/projects/angular-react-meetup/js/avatar.js","../customFilter.js":"/Users/juju/Documents/projects/angular-react-meetup/js/customFilter.js","lodash":"/Users/juju/Documents/projects/angular-react-meetup/node_modules/lodash/dist/lodash.js","react":"/Users/juju/Documents/projects/angular-react-meetup/node_modules/react/react.js"}],"/Users/juju/Documents/projects/angular-react-meetup/js/wait.js":[function(require,module,exports){
+
+module.exports =function wait(duration, cb) {
+    duration = duration || 1;
+    var start = new Date(),
+        now = new Date();
+        x = 0;
+    while (now-start < duration) {
+        x++;
+        now = new Date();
+    }
+    if (cb) {
+        cb();
+    }
+}
+
+},{}],"/Users/juju/Documents/projects/angular-react-meetup/node_modules/angular/angular.js":[function(require,module,exports){
 /**
  * @license AngularJS v1.3.9
  * (c) 2010-2014 Google, Inc. http://angularjs.org

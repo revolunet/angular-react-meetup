@@ -9,14 +9,11 @@ var customFilter = require('../customFilter.js');
 
 
 function getAge(value) {
-  //  self.counters.filter++;
     var ddn = new Date(value);
     return (new Date()).getFullYear() - ddn.getFullYear();
 }
 
 function formatFirst(first) {
-    //this.counters.func++;
-    // console.log(this.counters);
     return first.toUpperCase();
 }
 
@@ -42,7 +39,7 @@ var Row  = React.createClass({
                     <td>{ formatFirst(this.props.data.first) }</td>
                     <td>{ this.props.data.last }</td>
                     <td>{ this.props.data.email }</td>
-                    <td><img width="50" src={ avatar(this.props.data.id, {}) }/></td>
+                    <td><img width="50" className={this.state.checked?'greyscale':''} src={ avatar(this.props.data.id, {}) }/></td>
                     <td>{ getAge(this.props.data.ddn) }</td>
                     <td className={this.props.rowCls}></td>
                 </tr>;
@@ -58,11 +55,6 @@ var ExampleTable = React.createClass({
         return {
             query: ''
         };
-    },
-    counters: {
-        func: 0,
-        render: 0,
-        filter: 0
     },
     onUpdateQuery: function(event) {
         this.setState({
@@ -81,8 +73,6 @@ var ExampleTable = React.createClass({
     },
     render: function() {
         var self = this;
-        this.counters.render++;
-       // console.log(this.counters);
         return <div>
                 <button className="btn btn-danger" onClick={this.onClick}>nothing</button>
                 <br/><br/>
