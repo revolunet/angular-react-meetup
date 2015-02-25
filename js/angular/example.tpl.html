@@ -7,7 +7,6 @@
             <th>first</th>
             <th>last</th>
             <th>email</th>
-            <th>pic</th>
             <th>age</th>
             <th>status</th>
         </tr>
@@ -20,8 +19,7 @@
             <td>{{ Ctrl.formatFirst(row.first) }}</td>
             <td>{{ row.last }}</td>
             <td>{{ row.email }}</td>
-            <td><img ng-class="{greyscale: row.checked}" ng-src="{{ row.id|avatar }}" width="50"/></td>
-            <td>{{ row.ddn|since }}</td>
+            <td>{{ row.ddn|age }}</td>
             <td ng-class="{odd: $index%2==0}"></td>
         </tr>
     </tbody>

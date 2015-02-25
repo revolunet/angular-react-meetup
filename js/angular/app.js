@@ -5,6 +5,7 @@ var angular = require('angular');
 var fs = require('fs');
 var data = require('../data');
 
+var wait = require('../wait.js');
 var avatar = require('../avatar.js');
 var customFilter = require('../customFilter.js');
 
@@ -42,12 +43,15 @@ angular.module('Demo', [])
     func: 0
 })
 
-.filter('since', function(counters) {
-    return function(value) {
+.filter('age', function(counters) {
+    var func = function(value) {
+        wait();
         counters.filter++;
         var ddn = new Date(value);
         return (new Date()).getFullYear() - ddn.getFullYear();
     };
+    func.$stateful = true;
+    return func;
 })
 
 .filter('log', function() {

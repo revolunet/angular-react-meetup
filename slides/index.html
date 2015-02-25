@@ -71,7 +71,7 @@ class: word
 
 AngularJS + ReactJS
 
-.h4[@ngParis le 29/01/2015]
+.h4[@ParisJS le 25/02/2015]
 .small[(press P for presentator notes)]
 
 ???
@@ -112,6 +112,8 @@ AngularJS
 
 ???
 
+- Data binding
+
 - Productivité (prototyping)
 
 - Réusabilité (modules)
@@ -131,11 +133,14 @@ Data binding
 
 Le data-binding est la feature la plus appréciée et la plus puissante d'Angular, mais le fonctionnement actuel pose des challenges de performance.
 
-- Bete et méchant : le cycle de digest est global à l'application : n'importe quel évènement dans votre app va re-évaluer tous vos bindings : ng-click, ng-show, ng-class... requetes http, promises, changement de modèle... en cas de mise à jour d'un modèle c'est n boucles qui sont executés jusqu'a stabilisation (donc minimum 2 cycles)
+- Bete et méchant : le cycle de digest est global à l'application : n'importe quel évènement dans votre app va re-évaluer tous vos bindings : ng-click, ng-show, ng-class, champs inputs, requetes http, promises... en cas de mise à jour d'un modèle c'est n boucles qui sont executés jusqu'a stabilisation (donc minimum 2 cycles)
 
 - 60fps === Temps de digest doit être < 16ms pour assurer la fluidité
 
 - Pas de maitrise possible des cycles de digest
+
+-> exemple : http://jsbin.com/qudabo/14/edit?html,console,output
+
 
 ---
 class: word
@@ -144,7 +149,7 @@ ReactJS
 
 ???
 
-- Microframework
+- View library VS framework
 
 - Uniquement les directives (non-standard web components)
     - virtual DOM : fix slow DOM updates
@@ -170,24 +175,38 @@ Micro benchmark sur un cas simple
 
 Montre uniquement les perfs brutes sur un cas précis et isolé
 
-???
+**conclusion**
 
 - plus on a de DOM et de bindings, plus le cycle digest sera long
 
-- 'track by' indispensable
+- temps de rendu initial un peu plus rapide sur react : 300ms VS 350ms
 
-- temps de rendu initial sensiblement équivalent
+- temps de MAJ bcp plus rapide sur react (x3) : 10ms VS 30ms dans notre cas
 
-- temps de MAJ optimisé sur react (x4)
+- 519 listeners VS 14. better memory footprint
 
-- 1015 listeners VS 15. better memory footprint
+- fonctionnement interne des widgets vraiment isolé du reste de l'app
 
-- fonctionnement interne du widget isolé du reste de l'app
+
+---
+class: center
+
+# AngularJS optims
+
+### migrate to 1.3+
+### ng-repeat + `track by`
+### `filter.$stateful` (1.3)
+### bindonce with `::variable`
+### avoid `$apply()`
+### use `scope.$digest()` when possible
+
+
+???
 
 ---
 class: word
 
-Intégration
+ReactJS Integration
 
 ???
 
@@ -205,6 +224,7 @@ var props = {
   data: tableData
 };
 
+// création d'une instance
 var instance = React.createFactory(TableExampleClass)(props);
 
 // final render
@@ -247,6 +267,80 @@ angular.module('demo')
 ???
 
 also see ngReact project
+
+
+---
+
+<h3>React -> Angular communication</h3>
+
+```js
+.directive('reactExample', function() {
+  return {
+    restrict: 'E',
+*   scope: {
+*     doSomething: '&'
+*   },
+    link: function(scope, iElement, iAttributes) {
+
+      var props = scope.$eval(iAttributes.props);
+*     props.onDoSomething = scope.doSomething;
+      var instance = React.createFactory(iAttributes.component)(props);
+
+      React.render(
+        instance,
+        iElement[0]
+      );
+
+    }
+  };
+});
+```
+
+react:
+```js
+<div onClick={ this.props.onDoSomething }></div>
+```
+
+
+
+---
+
+<h3>Angular -> React communication</h3>
+
+react
+
+```js
+doSomething: function() {
+  this.setState({
+    done: true
+  });
+}
+```
+
+
+```js
+.directive('reactExample', function() {
+  return {
+    restrict: 'E',
+    link: function(scope, iElement, iAttributes) {
+
+      var props = scope.$eval(iAttributes.props);
+      var instance = React.createFactory(iAttributes.component)(props);
+
+      React.render(
+        instance,
+        iElement[0]
+      );
+
+*     $scope.$watch('expression', function(newValue) {
+*       instance.doSomething(newValue);
+*     });
+
+    }
+  };
+});
+```
+
 ---
 class:center
 

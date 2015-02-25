@@ -12,6 +12,7 @@ var angular = require('angular');
 
 var data = require('../data');
 
+var wait = require('../wait.js');
 var avatar = require('../avatar.js');
 var customFilter = require('../customFilter.js');
 
@@ -49,12 +50,15 @@ angular.module('Demo', [])
     func: 0
 })
 
-.filter('since', function(counters) {
-    return function(value) {
+.filter('age', function(counters) {
+    var func = function(value) {
+        wait();
         counters.filter++;
         var ddn = new Date(value);
         return (new Date()).getFullYear() - ddn.getFullYear();
     };
+    func.$stateful = true;
+    return func;
 })
 
 .filter('log', function() {
@@ -116,7 +120,7 @@ angular.module('Demo', [])
 .directive('tableExample', function(counters) {
     return {
         restrict: 'E',
-        template: Buffer("PGlucHV0IG5nLW1vZGVsPSJxdWVyeSIgcGxhY2Vob2xkZXI9ImZpbHRlci4uLiIvPgoKPHRhYmxlIGNsYXNzPSJ0YWJsZSB0YWJsZS1ib3JkZXJlZCB0YWJsZS1zdHJpcGVkIj4KICAgIDx0aGVhZD4KICAgICAgICA8dHI+CiAgICAgICAgICAgIDx0aD48L3RoPgogICAgICAgICAgICA8dGg+Zmlyc3Q8L3RoPgogICAgICAgICAgICA8dGg+bGFzdDwvdGg+CiAgICAgICAgICAgIDx0aD5lbWFpbDwvdGg+CiAgICAgICAgICAgIDx0aD5waWM8L3RoPgogICAgICAgICAgICA8dGg+YWdlPC90aD4KICAgICAgICAgICAgPHRoPnN0YXR1czwvdGg+CiAgICAgICAgPC90cj4KICAgIDwvdGhlYWQ+CiAgICA8dGJvZHk+CiAgICAgICAgPHRyCiAgICAgICAgICAgIG5nLXJlcGVhdD0icm93IGluIGRhdGF8Y3VzdG9tRmlsdGVyOnF1ZXJ5IHRyYWNrIGJ5IHJvdy5pZCIKICAgICAgICAgICAgbmctY2xhc3M9IntjaGVja2VkOiByb3cuY2hlY2tlZH0iPgogICAgICAgICAgICA8dGQ+PGlucHV0IHR5cGU9ImNoZWNrYm94IiBuZy1jaGVja2VkPSJyb3cuY2hlY2tlZCIgbmctY2xpY2s9IkN0cmwuY2xpY2tSb3cocm93KSIvPjwvdGQ+CiAgICAgICAgICAgIDx0ZD57eyBDdHJsLmZvcm1hdEZpcnN0KHJvdy5maXJzdCkgfX08L3RkPgogICAgICAgICAgICA8dGQ+e3sgcm93Lmxhc3QgfX08L3RkPgogICAgICAgICAgICA8dGQ+e3sgcm93LmVtYWlsIH19PC90ZD4KICAgICAgICAgICAgPHRkPjxpbWcgbmctY2xhc3M9IntncmV5c2NhbGU6IHJvdy5jaGVja2VkfSIgbmctc3JjPSJ7eyByb3cuaWR8YXZhdGFyIH19IiB3aWR0aD0iNTAiLz48L3RkPgogICAgICAgICAgICA8dGQ+e3sgcm93LmRkbnxzaW5jZSB9fTwvdGQ+CiAgICAgICAgICAgIDx0ZCBuZy1jbGFzcz0ie29kZDogJGluZGV4JTI9PTB9Ij48L3RkPgogICAgICAgIDwvdHI+CiAgICA8L3Rib2R5PgoKPC90YWJsZT4K","base64").toString(),
+        template: Buffer("PGlucHV0IG5nLW1vZGVsPSJxdWVyeSIgcGxhY2Vob2xkZXI9ImZpbHRlci4uLiIvPgoKPHRhYmxlIGNsYXNzPSJ0YWJsZSB0YWJsZS1ib3JkZXJlZCB0YWJsZS1zdHJpcGVkIj4KICAgIDx0aGVhZD4KICAgICAgICA8dHI+CiAgICAgICAgICAgIDx0aD48L3RoPgogICAgICAgICAgICA8dGg+Zmlyc3Q8L3RoPgogICAgICAgICAgICA8dGg+bGFzdDwvdGg+CiAgICAgICAgICAgIDx0aD5lbWFpbDwvdGg+CiAgICAgICAgICAgIDx0aD5hZ2U8L3RoPgogICAgICAgICAgICA8dGg+c3RhdHVzPC90aD4KICAgICAgICA8L3RyPgogICAgPC90aGVhZD4KICAgIDx0Ym9keT4KICAgICAgICA8dHIKICAgICAgICAgICAgbmctcmVwZWF0PSJyb3cgaW4gZGF0YXxjdXN0b21GaWx0ZXI6cXVlcnkgdHJhY2sgYnkgcm93LmlkIgogICAgICAgICAgICBuZy1jbGFzcz0ie2NoZWNrZWQ6IHJvdy5jaGVja2VkfSI+CiAgICAgICAgICAgIDx0ZD48aW5wdXQgdHlwZT0iY2hlY2tib3giIG5nLWNoZWNrZWQ9InJvdy5jaGVja2VkIiBuZy1jbGljaz0iQ3RybC5jbGlja1Jvdyhyb3cpIi8+PC90ZD4KICAgICAgICAgICAgPHRkPnt7IEN0cmwuZm9ybWF0Rmlyc3Qocm93LmZpcnN0KSB9fTwvdGQ+CiAgICAgICAgICAgIDx0ZD57eyByb3cubGFzdCB9fTwvdGQ+CiAgICAgICAgICAgIDx0ZD57eyByb3cuZW1haWwgfX08L3RkPgogICAgICAgICAgICA8dGQ+e3sgcm93LmRkbnxhZ2UgfX08L3RkPgogICAgICAgICAgICA8dGQgbmctY2xhc3M9IntvZGQ6ICRpbmRleCUyPT0wfSI+PC90ZD4KICAgICAgICA8L3RyPgogICAgPC90Ym9keT4KCjwvdGFibGU+Cg==","base64").toString(),
         scope: {
             data:'='
         },
@@ -139,7 +143,7 @@ window.loadng = function() {
 };
 
 }).call(this,require("buffer").Buffer)
-},{"../avatar.js":"/Users/juju/Documents/projects/angular-react-meetup/js/avatar.js","../customFilter.js":"/Users/juju/Documents/projects/angular-react-meetup/js/customFilter.js","../data":"/Users/juju/Documents/projects/angular-react-meetup/js/data.js","angular":"/Users/juju/Documents/projects/angular-react-meetup/node_modules/angular/index.js","buffer":"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/buffer/index.js"}],"/Users/juju/Documents/projects/angular-react-meetup/js/app.js":[function(require,module,exports){
+},{"../avatar.js":"/Users/juju/Documents/projects/angular-react-meetup/js/avatar.js","../customFilter.js":"/Users/juju/Documents/projects/angular-react-meetup/js/customFilter.js","../data":"/Users/juju/Documents/projects/angular-react-meetup/js/data.js","../wait.js":"/Users/juju/Documents/projects/angular-react-meetup/js/wait.js","angular":"/Users/juju/Documents/projects/angular-react-meetup/node_modules/angular/index.js","buffer":"/usr/local/lib/node_modules/watchify/node_modules/browserify/node_modules/buffer/index.js"}],"/Users/juju/Documents/projects/angular-react-meetup/js/app.js":[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -151,7 +155,6 @@ var angulardemo = require('./angular/app.js');
 
 
 var ExampleTable = React.createFactory(require('./react/ExampleTable.jsx'));
-
 
 
 window.startAnim = function() {
@@ -197,7 +200,7 @@ window.loadreact = function() {
         }),
         document.getElementById('reactdemo')
     );
-}
+};
 
 },{"./angular/app.js":"/Users/juju/Documents/projects/angular-react-meetup/js/angular/app.js","./data.js":"/Users/juju/Documents/projects/angular-react-meetup/js/data.js","./react/ExampleTable.jsx":"/Users/juju/Documents/projects/angular-react-meetup/js/react/ExampleTable.jsx","react":"/Users/juju/Documents/projects/angular-react-meetup/node_modules/react/react.js"}],"/Users/juju/Documents/projects/angular-react-meetup/js/avatar.js":[function(require,module,exports){
 'use strict';
@@ -207,7 +210,7 @@ var wait = require('./wait');
 module.exports = function(idx) {
     var sex = (idx%2)?'women':'men',
         num = idx % 100;
-    wait(1);
+    //wait(1);
     return 'http://api.randomuser.me/portraits/' + sex + '/' + num + '.jpg';
 };
 
@@ -266,10 +269,11 @@ var _ = require('lodash');
 
 var avatar = require('../avatar.js');
 var customFilter = require('../customFilter.js');
-
+var wait = require('../wait.js');
 
 function getAge(value) {
     var ddn = new Date(value);
+    wait();
     return (new Date()).getFullYear() - ddn.getFullYear();
 }
 
@@ -299,7 +303,6 @@ var Row  = React.createClass({displayName: "Row",
                     React.createElement("td", null,  formatFirst(this.props.data.first) ), 
                     React.createElement("td", null,  this.props.data.last), 
                     React.createElement("td", null,  this.props.data.email), 
-                    React.createElement("td", null, React.createElement("img", {width: "50", className: this.state.checked?'greyscale':'', src:  avatar(this.props.data.id, {}) })), 
                     React.createElement("td", null,  getAge(this.props.data.ddn) ), 
                     React.createElement("td", {className: this.props.rowCls})
                 );
@@ -343,7 +346,6 @@ var ExampleTable = React.createClass({displayName: "ExampleTable",
                             React.createElement("th", null, "first"), 
                             React.createElement("th", null, "last"), 
                             React.createElement("th", null, "email"), 
-                            React.createElement("th", null, "pic"), 
                             React.createElement("th", null, "age"), 
                             React.createElement("th", null, "status")
                         )
@@ -361,7 +363,7 @@ var ExampleTable = React.createClass({displayName: "ExampleTable",
 
 module.exports = ExampleTable;
 
-},{"../avatar.js":"/Users/juju/Documents/projects/angular-react-meetup/js/avatar.js","../customFilter.js":"/Users/juju/Documents/projects/angular-react-meetup/js/customFilter.js","lodash":"/Users/juju/Documents/projects/angular-react-meetup/node_modules/lodash/dist/lodash.js","react":"/Users/juju/Documents/projects/angular-react-meetup/node_modules/react/react.js"}],"/Users/juju/Documents/projects/angular-react-meetup/js/wait.js":[function(require,module,exports){
+},{"../avatar.js":"/Users/juju/Documents/projects/angular-react-meetup/js/avatar.js","../customFilter.js":"/Users/juju/Documents/projects/angular-react-meetup/js/customFilter.js","../wait.js":"/Users/juju/Documents/projects/angular-react-meetup/js/wait.js","lodash":"/Users/juju/Documents/projects/angular-react-meetup/node_modules/lodash/dist/lodash.js","react":"/Users/juju/Documents/projects/angular-react-meetup/node_modules/react/react.js"}],"/Users/juju/Documents/projects/angular-react-meetup/js/wait.js":[function(require,module,exports){
 
 module.exports =function wait(duration, cb) {
     duration = duration || 1;

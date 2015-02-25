@@ -11,7 +11,6 @@ var angulardemo = require('./angular/app.js');
 var ExampleTable = React.createFactory(require('./react/ExampleTable.jsx'));
 
 
-
 window.startAnim = function() {
 
     function startJs() {
@@ -55,4 +54,4 @@ window.loadreact = function() {
         }),
         document.getElementById('reactdemo')
     );
-}
+};

@@ -6,10 +6,11 @@ var _ = require('lodash');
 
 var avatar = require('../avatar.js');
 var customFilter = require('../customFilter.js');
-
+var wait = require('../wait.js');
 
 function getAge(value) {
     var ddn = new Date(value);
+    wait();
     return (new Date()).getFullYear() - ddn.getFullYear();
 }
 
@@ -39,7 +40,6 @@ var Row  = React.createClass({
                     <td>{ formatFirst(this.props.data.first) }</td>
                     <td>{ this.props.data.last }</td>
                     <td>{ this.props.data.email }</td>
-                    <td><img width="50" className={this.state.checked?'greyscale':''} src={ avatar(this.props.data.id, {}) }/></td>
                     <td>{ getAge(this.props.data.ddn) }</td>
                     <td className={this.props.rowCls}></td>
                 </tr>;
@@ -83,7 +83,6 @@ var ExampleTable = React.createClass({
                             <th>first</th>
                             <th>last</th>
                             <th>email</th>
-                            <th>pic</th>
                             <th>age</th>
                             <th>status</th>
                         </tr>
