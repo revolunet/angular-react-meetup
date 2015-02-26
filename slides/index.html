@@ -81,8 +81,9 @@ Pourquoi et comment intégrer React dans des applications Angular
 ---
 class: word
 
-Expérience
+Experience
 
+### @revolunet
 ???
 
 Julien Bouquillon @revolunet github/twitter
@@ -177,13 +178,13 @@ Montre uniquement les perfs brutes sur un cas précis et isolé
 
 **conclusion**
 
-- plus on a de DOM et de bindings, plus le cycle digest sera long
+- plus on a de DOM et de bindings, plus le cycle digest sera long (linéaire)
 
 - temps de rendu initial un peu plus rapide sur react : 300ms VS 350ms
 
-- temps de MAJ bcp plus rapide sur react (x3) : 10ms VS 30ms dans notre cas
+- temps de MAJ bcp plus rapide sur react (x2 à x3) : 10ms VS 30ms dans notre cas
 
-- 519 listeners VS 14. better memory footprint
+- 519 listeners VS 14. better memory footprint (event delegation)
 
 - fonctionnement interne des widgets vraiment isolé du reste de l'app
 
@@ -239,9 +240,12 @@ React.render(
 
 <h3>Using an angular directive</h3>
 
-```js
-angular.module('demo')
 
+```html
+<react-example component="TableExample" props="{data: myData}"></react-example>
+```
+
+```js
 .directive('reactExample', function() {
   return {
     restrict: 'E',
@@ -255,13 +259,13 @@ angular.module('demo')
         iElement[0]
       );
 
+      scope.$on('$destroy', function() {
+          React.unmountComponentAtNode(iElement[0]);
+      });
+
     }
   };
 });
-```
-
-```html
-<react-example component="TableExample" props="{data: myData}"></react-example>
 ```
 
 ???
@@ -281,7 +285,6 @@ also see ngReact project
 *     doSomething: '&'
 *   },
     link: function(scope, iElement, iAttributes) {
-
       var props = scope.$eval(iAttributes.props);
 *     props.onDoSomething = scope.doSomething;
       var instance = React.createFactory(iAttributes.component)(props);
@@ -291,6 +294,9 @@ also see ngReact project
         iElement[0]
       );
 
+      scope.$on('$destroy', function() {
+          React.unmountComponentAtNode(iElement[0]);
+      });
     }
   };
 });
@@ -336,6 +342,9 @@ doSomething: function() {
 *       instance.doSomething(newValue);
 *     });
 
+      scope.$on('$destroy', function() {
+          React.unmountComponentAtNode(iElement[0]);
+      });
     }
   };
 });
@@ -347,7 +356,8 @@ class:center
 <h1>Conclusion</h1>
 
 <h3>Explicit is better than implicit</h3>
-<h3>Achieve true isolation with react componentss</h3>
+<h3>Achieve true isolation with react components</h3>
+<h3>Improve your app perf by replacing most expensive directives</h3>
 <h3>Embrace NPM and browserify standards</h3>
 
 ---
@@ -356,6 +366,8 @@ class:center
 <h1>Questions ?</h1>
 
 [https://revolunet.github.com/angular-react-meetup](https://revolunet.github.com/angular-react-meetup)
+
+[https://gist.github.com/revolunet/1e62924c8d5e522e8df5](https://gist.github.com/revolunet/1e62924c8d5e522e8df5)
 
 [http://www.williambrownstreet.net/blog/2014/04/faster-angularjs-rendering-angularjs-and-reactjs](http://www.williambrownstreet.net/blog/2014/04/faster-angularjs-rendering-angularjs-and-reactjs)
 
